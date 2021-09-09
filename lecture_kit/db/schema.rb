@@ -10,22 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_21_193828) do
+ActiveRecord::Schema.define(version: 2021_09_09_204520) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
   end
 
-  create_table "plant_parenthoods", force: :cascade do |t|
-    t.integer "plant_id"
-    t.integer "plant_parent_id"
-    t.integer "affection"
-  end
-
-  create_table "plant_parents", force: :cascade do |t|
+  create_table "people", force: :cascade do |t|
     t.string "name"
     t.boolean "responsible"
     t.integer "age"
+  end
+
+  create_table "plant_categories", force: :cascade do |t|
+    t.integer "category_id"
+    t.integer "plant_id"
+    t.index ["category_id"], name: "index_plant_categories_on_category_id"
+    t.index ["plant_id"], name: "index_plant_categories_on_plant_id"
+  end
+
+  create_table "plant_parenthoods", force: :cascade do |t|
+    t.integer "plant_id"
+    t.integer "person_id"
+    t.integer "affection"
   end
 
   create_table "plants", force: :cascade do |t|
@@ -33,7 +40,15 @@ ActiveRecord::Schema.define(version: 2020_12_21_193828) do
     t.string "color"
     t.datetime "bought"
     t.boolean "fussy"
-    t.integer "category_id"
+  end
+
+  create_table "waterings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "plant_id"
+    t.integer "person_id"
+    t.index ["person_id"], name: "index_waterings_on_person_id"
+    t.index ["plant_id"], name: "index_waterings_on_plant_id"
   end
 
 end
